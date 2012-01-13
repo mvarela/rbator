@@ -63,26 +63,24 @@ class Rbator
       end
     end
     r = pixels_r.inject {|sum, n| sum+n} / @step**2
-    r=255 if r > 255
+    r = 255 if r > 255
 
     g = pixels_g.inject {|sum, n| sum+n} / @step**2
-    g=255 if g > 255
+    g = 255 if g > 255
 
     b = pixels_b.inject {|sum, n| sum+n} / @step**2
-    b=255 if b > 255
+    b = 255 if b > 255
 
     fraction = (r+g+b) / (255*3.0)
     this_surface = (@mono_invert ? (@max_surface - (fraction * @max_surface)): fraction * @max_surface)
     radius = Math::sqrt(this_surface / Math::PI)
     return [radius, r, g, b] #unless @mono_invert
-    return [(@step/2 -radius), r, g,b]
   end
 
 
 
 
   def rasterbate
-p "Monochrome is " + @monochrome.to_s
     out = Imlib2::Image.new @w*@step, @h*@step
     out.format = @format
     out.fill_rect(0,0,@w*@step,@h*@step, Imlib2::Color::WHITE) if @mono_invert
@@ -178,7 +176,6 @@ opts.each do |opt, arg|
     rasterbate_args[:mono_invert] = true
   when '--output-file'
     rasterbate_args[:out_name] = arg
-    p arg
   when '--step'
     if(arg.to_i > 0)
       rasterbate_args[:step] = arg.to_i
